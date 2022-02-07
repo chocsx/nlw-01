@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Constants from 'expo-constants';
 import { Feather as Icon } from '@expo/vector-icons';
-import { useNavigation, useRoutes, useRoute } from '@react-navigation/native'
+import { useNavigation, useRoute } from '@react-navigation/native'
 import { View, Text, StyleSheet, Image, TouchableOpacity, ScrollView, Alert } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 import { SvgUri } from 'react-native-svg';
@@ -43,14 +43,13 @@ const Points = () => {
   useEffect(() => {
 
     async function loadPosition() {
-      const { status } = await Location.requestPermissionsAsync();
+      const { status } = await Location.requestForegroundPermissionsAsync();
 
       if (status !== 'granted') {
         Alert.alert('Ooooops...', 'Precisamos de sua permissão para obter a localização');
         return;
       }
-      const location = await Location.getCurrentPositionAsync();
-
+      const location = await Location.getCurrentPositionAsync({});
       const { latitude, longitude } = location.coords;
 
       setInitialPosition([latitude,longitude]);
@@ -72,6 +71,7 @@ const Points = () => {
         items: selectedItems
       }
     }).then(response => {
+      console.log(response)
       setPoints(response.data)
     })
   }, [selectedItems])
