@@ -1,13 +1,13 @@
 import React from 'react';
 import './App.css';
 
-import Routes from './routes';
+import RoutesApp from './routes';
 
 function App() {
 
   return (
     <div>
-      <Routes />
+      <RoutesApp />
     </div>
   );
 }

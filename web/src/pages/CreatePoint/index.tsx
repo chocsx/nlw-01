@@ -1,7 +1,7 @@
 import React, { useEffect, useState, ChangeEvent, FormEvent } from 'react';
-import { Link, useHistory } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { FiArrowLeft } from 'react-icons/fi'
-import { Map, TileLayer, Marker} from 'react-leaflet'
+import { MapContainer, TileLayer, Marker} from 'react-leaflet'
 import axios from 'axios';
 import { LeafletMouseEvent } from 'leaflet';
 import api from '../../services/api';
@@ -45,7 +45,7 @@ const CreatePoint = () => {
   const [selectedPosition, setSelectedPosition] = useState<[number, number]>([0,0]);
   const [selectedFile, setSelectedFile] = useState<File>()
 
-  const history = useHistory();
+  const navigate = useNavigate();
   
   useEffect(() => {
     api.get('items').then(response => {
@@ -150,7 +150,7 @@ const CreatePoint = () => {
     await api.post('points', data);
 
     alert('ponto de alerta criado');
-    history.push('/')
+    navigate('/')
   }
 
   return (
@@ -210,13 +210,13 @@ const CreatePoint = () => {
             <span>Selecione o endereço no mapa</span>
           </legend>
 
-          <Map center={initialPosition} zoom={15} onclick={handleMapClick}>
+          <MapContainer center={initialPosition} zoom={15} onclick={handleMapClick}>
             <TileLayer
               attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             />
             <Marker position={selectedPosition} />
-          </Map>
+          </MapContainer>
 
           <div className="field-group">
             <div className="field">
